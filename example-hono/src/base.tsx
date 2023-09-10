@@ -1,0 +1,27 @@
+import { html } from 'hono/html';
+
+export const Base = (props: { children?: string }) => html`<!DOCTYPE html>
+  <html lang="en" class="h-full bg-neutral-content">
+    <head>
+      <meta charset="utf-8" />
+      <title>Home</title>
+      <link
+        href="https://cdn.jsdelivr.net/npm/daisyui@3.7.3/dist/full.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://unpkg.com/htmx.org@1.8.5"></script>
+      <script src="https://unpkg.com/htmx.org/dist/ext/multi-swap.js"></script>
+    </head>
+    <body class="h-full" hx-ext="multi-swap">
+      <header>
+        <div class="navbar bg-base-100 shadow">
+          <a class="btn btn-ghost normal-case text-xl">Home</a>
+        </div>
+      </header>
+      <main id="main" class="container mx-auto pt-2 pb-2 gap-2 flex flex-col">
+        ${props.children}
+      </main>
+    </body>
+  </html>`;
