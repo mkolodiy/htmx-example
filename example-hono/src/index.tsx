@@ -26,14 +26,23 @@ const app = new Hono();
 app.get('/', (c) =>
   c.html(
     <Base>
-      <Home persons={persons} />
+      <Home persons={persons} personsCount={persons.length} />
     </Base>
   )
 );
 
+app.get('/personsCount', (c) => {
+  return c.text(persons.length.toString());
+});
+
 app.post('/form', async (c) => {
-  const body = await c.req.parseBody<Person>();
-  return c.html(<Person person={body} />);
+  const newPerson = await c.req.parseBody<Person>();
+
+  persons.push(newPerson);
+
+  c.header('HX-Trigger-After-Swap', 'update-persons-count');
+
+  return c.html(<Person person={newPerson} />);
 });
 
 serve(app);

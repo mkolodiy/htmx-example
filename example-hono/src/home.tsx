@@ -1,7 +1,7 @@
-import { Fragment, } from 'hono/jsx';
+import { Fragment } from 'hono/jsx';
 import { Person } from '.';
 
-export function Home(props: { persons: Person[] }) {
+export function Home(props: { persons: Person[]; personsCount: number }) {
   return (
     <Fragment>
       <div class="card bg-base-100 p-2">
@@ -28,7 +28,16 @@ export function Home(props: { persons: Person[] }) {
         </form>
       </div>
       <div class="card bg-base-100 p-2">
-        <h1 class="mb-2 text-2xl font-medium">Persons</h1>
+        <h1 class="mb-2 text-2xl font-medium">
+          <span>Persons</span>{' '}
+          <span
+            hx-get="/personsCount"
+            hx-trigger="update-persons-count from:body"
+            hx-swap="innerHTML"
+          >
+            {props.personsCount}
+          </span>
+        </h1>
         {props.persons.length === 0 ? (
           <div id="no-persons">No persons yet</div>
         ) : (
