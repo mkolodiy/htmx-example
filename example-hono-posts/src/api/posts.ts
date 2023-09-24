@@ -1,25 +1,45 @@
+import crypto from 'node:crypto';
+
 export type Post = {
   id: string;
   title: string;
   description: string;
 };
 
-const posts: Array<Post> = [
-  {
-    id: '1',
-    title: 'Post 1',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-  },
-  {
-    id: '1',
-    title: 'Different',
-    description: 'Different post',
-  },
-];
+export type Comment = {
+  id: string;
+  postId: string;
+  message: string;
+  createdAt: Date;
+};
 
-export async function createPost(post: Post) {
+let posts: Array<Post> = [];
+
+const comments: Array<Comment> = [];
+
+export async function createPost(newPost: Omit<Post, 'id'>) {
+  const id = crypto.randomUUID();
+  const post: Post = {
+    id,
+    ...newPost,
+  };
   posts.push(post);
+  return Promise.resolve(id);
+}
+
+export async function updatePost(newPost: Post) {
+  const post = posts.find((post) => post.id === newPost.id);
+  if (post) {
+    post.title = newPost.title;
+    post.description = newPost.description;
+    return Promise.resolve(true);
+  }
+
+  return Promise.resolve(false);
+}
+
+export async function deletePost(id: string) {
+  posts = posts.filter((post) => post.id !== id);
   return Promise.resolve();
 }
 
@@ -39,4 +59,20 @@ export async function searchPosts(searchTerm: string) {
       post.description.toLocaleLowerCase().includes(searchTerm)
   );
   return Promise.resolve(result);
+}
+
+export function getComments(postId: string) {
+  const result = comments.filter((comment) => comment.postId === postId);
+  return Promise.resolve(result);
+}
+
+export function createComment(newComment: Omit<Comment, 'id' | 'createdAt'>) {
+  const id = crypto.randomUUID();
+  const comment: Comment = {
+    id,
+    createdAt: new Date(),
+    ...newComment,
+  };
+  comments.push(comment);
+  return Promise.resolve(comment);
 }

@@ -1,11 +1,14 @@
-import { Post } from '../api/posts';
+import clsx from 'clsx';
+import type { Post } from '../api/posts';
 
-export function Sidebar(props: { posts: Array<Post> }) {
+export function Sidebar(props: { posts: Array<Post>; activePostId?: string }) {
   let postUI = null;
   if (props.posts.length === 0) {
     postUI = <EmptySidebarEntries message="No posts present" />;
   } else {
-    postUI = <SidebarEntries posts={props.posts} />;
+    postUI = (
+      <SidebarEntries posts={props.posts} activePostId={props.activePostId} />
+    );
   }
 
   return (
@@ -37,7 +40,7 @@ export function Sidebar(props: { posts: Array<Post> }) {
             </svg>
           </button>
         </div>
-        <button class="btn bg-white normal-case">
+        <a class="btn bg-white normal-case" href="/posts/add">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
@@ -47,7 +50,7 @@ export function Sidebar(props: { posts: Array<Post> }) {
             <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
           </svg>
           New
-        </button>
+        </a>
       </div>
       {postUI}
     </div>
@@ -62,19 +65,27 @@ export function EmptySidebarEntries(props: { message: string }) {
   );
 }
 
-export function SidebarEntries(props: { posts: Array<Post> }) {
+export function SidebarEntries(props: {
+  posts: Array<Post>;
+  activePostId?: string;
+}) {
   return (
     <div id="sidebarEntries" class="pt-0 p-4 flex flex-col gap-2">
       {props.posts.map((post) => (
-        <SidebarEntry post={post} />
+        <SidebarEntry post={post} isSelected={post.id === props.activePostId} />
       ))}
     </div>
   );
 }
 
-function SidebarEntry(props: { post: Post }) {
+function SidebarEntry(props: { post: Post; isSelected: boolean }) {
+  const classes = clsx(
+    'btn justify-start normal-case',
+    props.isSelected ? '' : 'btn-ghost'
+  );
+
   return (
-    <a href="/" class="btn btn-ghost justify-start normal-case">
+    <a href={`/posts/${props.post.id}`} class={classes}>
       {props.post.title}
     </a>
   );

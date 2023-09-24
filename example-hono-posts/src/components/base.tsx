@@ -1,8 +1,8 @@
 import { html } from 'hono/html';
-import { HtmlEscapedString } from 'hono/utils/html';
+import type { Children } from '../types';
 
 type Props = {
-  children: Array<HtmlEscapedString>;
+  children: Children;
 };
 
 export function Base(props: Props) {

@@ -16,6 +16,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.6.3
     version: 20.6.3
+  clsx:
+    specifier: ^2.0.0
+    version: 2.0.0
   daisyui:
     specifier: ^3.7.4
     version: 3.7.4
@@ -577,6 +580,11 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
     dev: true
 
   /colord@2.9.3:
