@@ -17,7 +17,18 @@ export function Base(props: Props) {
         <script src="/static/htmx.min.js"></script>
       </head>
       <body class="h-full flex flex-col">
-        <main class="flex-1 flex">${props.children}</main>
+        <header class="bg-slate-100 shadow pt-2 pb-2 p-4 z-10">
+          <nav>
+            <a class="btn btn-ghost btn-sm normal-case text-base" href="/"
+              >Posts</a
+            >
+            <a class="btn btn-ghost btn-sm normal-case text-base" href="/posts"
+              >Editor</a
+            >
+          </nav>
+        </header>
+        <main class="flex-1 flex z-0">${props.children}</main>
+        <script src="/static/client.js" type="module"></script>
       </body>
     </html>
   `;

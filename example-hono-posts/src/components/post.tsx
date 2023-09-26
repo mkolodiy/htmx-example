@@ -1,4 +1,4 @@
-import type { Comment, Post, Post } from '../api/posts';
+import type { Comment, Post } from '../api/posts';
 import type { Children } from '../types';
 
 export function Post(props: { post: Post; children: Children }) {
@@ -103,7 +103,12 @@ export function CreatePost(props: {
           </textarea>
         </div>
         <div class="flex gap-2">
-          <button class="btn" type="submit">
+          <button
+            id="post-form-submit-btn"
+            class="btn"
+            type="submit"
+            data-loadable-btn="true"
+          >
             Save
           </button>
           <a class="btn" href={props.cancelHref}>

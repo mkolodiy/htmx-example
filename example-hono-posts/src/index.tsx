@@ -36,8 +36,9 @@ app.get(
   '/static/htmx.min.js',
   serveStatic({ path: './src/assets/htmx.min.js' })
 );
+app.get('/static/client.js', serveStatic({ path: './src/assets/client.js' }));
 
-app.get('/', (c) => c.redirect('/posts'));
+app.get('/', (c) => c.html(<Base>Todo</Base>));
 
 app.get('/posts', async (c) => {
   const posts = await getPosts();
