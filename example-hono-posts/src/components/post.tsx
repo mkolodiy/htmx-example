@@ -44,13 +44,19 @@ export function Post(props: { post: Post; children: Children }) {
           hx-post={`/posts/${props.post.id}/comments`}
           hx-target="#comments"
           hx-swap="beforeend"
+          hx-disabled-elt="#comment-form-submit-btn"
         >
           <textarea
             name="message"
             class="textarea textarea-bordered w-full"
             placeholder="Comment here..."
           ></textarea>
-          <button type="submit" class="btn normal-case">
+          <button
+            id="comment-form-submit-btn"
+            type="submit"
+            class="btn normal-case"
+          >
+            <span class="loading loading-spinner htmx-indicator"></span>
             Submit
           </button>
         </form>
@@ -77,7 +83,11 @@ export function CreatePost(props: {
   return (
     <div class="flex-1 p-4 flex flex-col gap-2">
       <h1 class="text-2xl">{props.title}</h1>
-      <form class="flex flex-col gap-2" action={props.action} method="post">
+      <form
+        class="flex flex-col gap-2"
+        hx-post={props.action}
+        hx-disabled-elt="#post-form-submit-btn"
+      >
         <div class="form-control w-full">
           <label class="label">
             <span class="label-text">Name</span>
@@ -105,13 +115,13 @@ export function CreatePost(props: {
         <div class="flex gap-2">
           <button
             id="post-form-submit-btn"
-            class="btn"
+            class="btn normal-case"
             type="submit"
-            data-loadable-btn="true"
           >
+            <span class="loading loading-spinner htmx-indicator"></span>
             Save
           </button>
-          <a class="btn" href={props.cancelHref}>
+          <a class="btn normal-case" href={props.cancelHref}>
             Cancel
           </a>
         </div>

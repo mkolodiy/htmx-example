@@ -13,7 +13,7 @@ function triggerLoadableBtns() {
   }
 }
 
-window.onbeforeunload = function (event) {
-  console.log('Test');
-  triggerLoadableBtns();
-};
+// window.onbeforeunload = function (event) {
+//   console.log('Test');
+//   triggerLoadableBtns();
+// };

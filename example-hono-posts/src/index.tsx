@@ -32,6 +32,7 @@ const app = new Hono();
 app.use('/static/*', serveStatic({ root: './' }));
 
 app.get('/static/output.css', serveStatic({ path: './src/assets/output.css' }));
+app.get('/static/custom.css', serveStatic({ path: './src/assets/custom.css' }));
 app.get(
   '/static/htmx.min.js',
   serveStatic({ path: './src/assets/htmx.min.js' })
@@ -67,7 +68,8 @@ app.get('/posts/add', async (c) => {
 app.post('/posts/add', async (c) => {
   const body = await c.req.parseBody<Omit<Post, 'id'>>();
   const id = await createPost(body);
-  return c.redirect(`/posts/${id}`);
+  c.header('HX-Location', `/posts/${id}`);
+  return c.text('ok');
 });
 
 app.get('/posts/:id/edit', async (c) => {
@@ -100,7 +102,8 @@ app.post('/posts/:id/edit', async (c) => {
   const id = c.req.param('id');
   const body = await c.req.parseBody<Omit<Post, 'id'>>();
   await updatePost({ id, ...body });
-  return c.redirect(`/posts/${id}`);
+  c.header('HX-Location', `/posts/${id}`);
+  return c.text('ok');
 });
 
 app.get('/posts/:id', async (c) => {
@@ -131,7 +134,7 @@ app.get('/posts/:id', async (c) => {
 app.delete('/posts/:id', async (c) => {
   const id = c.req.param('id');
   await deletePost(id);
-  c.header('HX-Redirect', '/');
+  c.header('HX-Location', '/posts');
   return c.text('ok');
 });
 
