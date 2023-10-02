@@ -74,58 +74,94 @@ export function EmptyPost(props: { message: string }) {
   );
 }
 
-export function CreatePost(props: {
-  title: string;
-  post?: Pick<Post, 'title' | 'description'>;
-  action: string;
-  cancelHref: string;
+export function PostTitleInput(props: { title?: string; errors?: Children }) {
+  return (
+    <div id="title-form-control" class="form-control w-full">
+      <label class="label">
+        <span class="label-text">Name</span>
+      </label>
+      <input
+        value={props.title || ''}
+        type="text"
+        name="title"
+        placeholder="Add a post name..."
+        class="input input-bordered"
+        hx-post="/posts/validate/title"
+        hx-target="#title-form-control"
+        hx-swap="outerHTML"
+      />
+      {props.errors || null}
+    </div>
+  );
+}
+
+export function PostDescriptionInput(props: {
+  description?: string;
+  errors?: Children;
 }) {
   return (
-    <div class="flex-1 p-4 flex flex-col gap-2">
+    <div id="description-form-control" class="form-control w-full">
+      <label class="label">
+        <span class="label-text">Description</span>
+      </label>
+      <textarea
+        name="description"
+        class="textarea textarea-bordered"
+        placeholder="Add a description..."
+        hx-post="/posts/validate/description"
+        hx-target="#description-form-control"
+        hx-swap="outerHTML"
+      >
+        {props.description || ''}
+      </textarea>
+      {props.errors || null}
+    </div>
+  );
+}
+
+export function FormErrors(props: { errors: Array<string> }) {
+  return (
+    <label>
+      {props.errors.map((error) => (
+        <span class="label-text text-red-700">{error}</span>
+      ))}
+    </label>
+  );
+}
+
+export function CreatePost(props: {
+  title: string;
+  action: string;
+  cancelHref: string;
+  children: Children;
+}) {
+  return (
+    <div id="create-post" class="flex-1 p-4 flex flex-col gap-2">
       <h1 class="text-2xl">{props.title}</h1>
       <form
+        id="create-post-form"
         class="flex flex-col gap-2"
         hx-post={props.action}
         hx-disabled-elt="#post-form-submit-btn"
+        hx-target="#create-post"
+        hx-swap="outerHTML"
       >
-        <div class="form-control w-full">
-          <label class="label">
-            <span class="label-text">Name</span>
-          </label>
-          <input
-            value={props.post?.title || ''}
-            type="text"
-            name="title"
-            placeholder="Add a post name..."
-            class="input input-bordered"
-          />
-        </div>
-        <div class="form-control w-full">
-          <label class="label">
-            <span class="label-text">Description</span>
-          </label>
-          <textarea
-            name="description"
-            class="textarea textarea-bordered"
-            placeholder="Add a description..."
-          >
-            {props.post?.description || ''}
-          </textarea>
-        </div>
-        <div class="flex gap-2">
-          <button
-            id="post-form-submit-btn"
-            class="btn normal-case"
-            type="submit"
-          >
-            <span class="loading loading-spinner htmx-indicator"></span>
-            Save
-          </button>
-          <a class="btn normal-case" href={props.cancelHref}>
-            Cancel
-          </a>
-        </div>
+        {props.children}
       </form>
+      <div class="flex gap-2">
+        <button
+          id="post-form-submit-btn"
+          class="btn normal-case"
+          type="submit"
+          form="create-post-form"
+        >
+          <span class="loading loading-spinner htmx-indicator"></span>
+          Save
+        </button>
+        <a class="btn normal-case" href={props.cancelHref}>
+          Cancel
+        </a>
+      </div>
     </div>
   );
 }

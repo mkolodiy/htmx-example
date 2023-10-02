@@ -16,7 +16,7 @@ export function Base(props: Props) {
         <link href="/static/output.css" rel="stylesheet" />
         <script src="/static/htmx.min.js"></script>
       </head>
-      <body class="h-full flex flex-col">
+      <body class="h-full flex flex-col" hx-boost="true">
         <header class="bg-slate-100 shadow pt-2 pb-2 p-4 z-10">
           <nav>
             <a class="btn btn-ghost btn-sm normal-case text-base" href="/"

@@ -26,6 +26,9 @@ import {
   createComment,
   updatePost,
 } from './api/posts';
+import { suite } from './suite';
+import { pages } from './pages';
+import { controllers } from './controllers';
 
 const app = new Hono();
 
@@ -41,122 +44,8 @@ app.get('/static/client.js', serveStatic({ path: './src/assets/client.js' }));
 
 app.get('/', (c) => c.html(<Base>Todo</Base>));
 
-app.get('/posts', async (c) => {
-  const posts = await getPosts();
-  return c.html(
-    <Base>
-      <Sidebar posts={posts} />
-      <EmptyPost message="No post selected" />
-    </Base>
-  );
-});
+app.route('/', pages);
 
-app.get('/posts/add', async (c) => {
-  const posts = await getPosts();
-  return c.html(
-    <Base>
-      <Sidebar posts={posts} />
-      <CreatePost
-        title="Create a new post"
-        action="/posts/add"
-        cancelHref="/"
-      />
-    </Base>
-  );
-});
-
-app.post('/posts/add', async (c) => {
-  const body = await c.req.parseBody<Omit<Post, 'id'>>();
-  const id = await createPost(body);
-  c.header('HX-Location', `/posts/${id}`);
-  return c.text('ok');
-});
-
-app.get('/posts/:id/edit', async (c) => {
-  const id = c.req.param('id');
-  const post = await getPost(id);
-  const posts = await getPosts();
-  if (post) {
-    return c.html(
-      <Base>
-        <Sidebar posts={posts} activePostId={id} />
-        <CreatePost
-          title="Edit post"
-          post={{ title: post.title, description: post.description }}
-          action={`/posts/${id}/edit`}
-          cancelHref={`/posts/${id}`}
-        />
-      </Base>
-    );
-  }
-
-  return c.html(
-    <Base>
-      <Sidebar posts={posts} />
-      <EmptyPost message={`Post with id ${id} not present`} />
-    </Base>
-  );
-});
-
-app.post('/posts/:id/edit', async (c) => {
-  const id = c.req.param('id');
-  const body = await c.req.parseBody<Omit<Post, 'id'>>();
-  await updatePost({ id, ...body });
-  c.header('HX-Location', `/posts/${id}`);
-  return c.text('ok');
-});
-
-app.get('/posts/:id', async (c) => {
-  const id = c.req.param('id');
-  const posts = await getPosts();
-  const post = await getPost(id);
-  const comments = await getComments(id);
-
-  if (post) {
-    return c.html(
-      <Base>
-        <Sidebar posts={posts} activePostId={id} />
-        <PostComp post={post}>
-          <Comments comments={comments} />
-        </PostComp>
-      </Base>
-    );
-  }
-
-  return c.html(
-    <Base>
-      <Sidebar posts={posts} />
-      <EmptyPost message={`Post with id ${id} not present`} />
-    </Base>
-  );
-});
-
-app.delete('/posts/:id', async (c) => {
-  const id = c.req.param('id');
-  await deletePost(id);
-  c.header('HX-Location', '/posts');
-  return c.text('ok');
-});
-
-app.post('/posts/:id/comments', async (c) => {
-  const id = c.req.param('id');
-  const body = await c.req.parseBody<Pick<Comment, 'message'>>();
-  const comment = await createComment({ postId: id, ...body });
-  return c.html(<CommentComp comment={comment} />);
-});
-
-app.post('/fragment/search', async (c) => {
-  const body = await c.req.parseBody<{ searchTerm: string }>();
-  const result = await searchPosts(body.searchTerm);
-  if (body.searchTerm === '' && result.length === 0) {
-    return c.html(<EmptySidebarEntries message="No posts present" />);
-  } else if (result.length === 0) {
-    return c.html(
-      <EmptySidebarEntries message={`No results for ${body.searchTerm}`} />
-    );
-  } else {
-    return c.html(<SidebarEntries posts={result} />);
-  }
-});
+app.route('/', controllers);
 
 serve(app);

@@ -11,6 +11,9 @@ dependencies:
   hono:
     specifier: ^3.6.3
     version: 3.6.3
+  vest:
+    specifier: ^5.1.0
+    version: 5.1.0
 
 devDependencies:
   '@types/node':
@@ -600,6 +603,12 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
+  /context@3.0.13:
+    resolution: {integrity: sha512-O9h6VbY8DxcSNTvQaZ3PM6Fj1Rxndr5TAwgTQU8bvJdM06jW8UZvg3wWw67JMX/GgngTI9j6NaZ+btk7nqD82A==}
+    dependencies:
+      vest-utils: 1.1.0
+    dev: false
+
   /css-selector-tokenizer@0.8.0:
     resolution: {integrity: sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==}
     dependencies:
@@ -862,6 +871,13 @@ packages:
       object-assign: 4.1.1
       thenify-all: 1.6.0
     dev: true
+
+  /n4s@5.0.6:
+    resolution: {integrity: sha512-E3EkEzgkp5JKVy+wji1ykEX1V7/NHbQJE1VZ37rZLC59WJE+BMTPAxIw9sznWnUugKwE/MhSsdQ1atQDcC5tbw==}
+    dependencies:
+      context: 3.0.13
+      vest-utils: 1.1.0
+    dev: false
 
   /nanoid@3.3.6:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
@@ -1140,6 +1156,33 @@ packages:
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
+
+  /vast@1.0.22:
+    resolution: {integrity: sha512-y/Ehqj4dlSxlsoz+3uY3VkK/SvmRfUDKjZOoH3AEo4K60ewPpKfY1+rw4JAN85xjEo6tu5Y2PDYZVCwgEQN+Bw==}
+    dependencies:
+      vest-utils: 1.1.0
+    dev: false
+
+  /vest-utils@1.1.0:
+    resolution: {integrity: sha512-BL2XdKt38c5lugRQFrOsxefo5PWkOiUetnPTT/D51LXGMT83KX4au3x377Y3RpiOBxzrKEJkXJAtcrLSwel54Q==}
+    dev: false
+
+  /vest@5.1.0:
+    resolution: {integrity: sha512-0nSbwGoLqr0z9lS56IrULkzBwedcfoiSMIqgqQvv+VeLi78roCZxogcXkwrfcHFU9vlIO0njDfq+NdyQAcgJ6g==}
+    dependencies:
+      context: 3.0.13
+      n4s: 5.0.6
+      vast: 1.0.22
+      vest-utils: 1.1.0
+      vestjs-runtime: 1.0.4
+    dev: false
+
+  /vestjs-runtime@1.0.4:
+    resolution: {integrity: sha512-FwM2guyYsnUyXQdEOUIqPTjzezSBLYgtDM7fD+y6gCjbR2ye9SoF6LX9B+GFkneXxpqRaTf3n99MyB12txSRmg==}
+    dependencies:
+      context: 3.0.13
+      vest-utils: 1.1.0
+    dev: false
 
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
