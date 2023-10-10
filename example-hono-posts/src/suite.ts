@@ -1,9 +1,9 @@
 import { staticSuite, test, enforce } from 'vest';
-import { Post } from './api/posts';
+import { Comment, Post } from './api/posts';
 
 type FieldName = 'title' | 'description';
 
-export const suite = staticSuite<FieldName>(
+export const postSuite = staticSuite<FieldName>(
   (
     data: Pick<Post, 'title' | 'description'> = { title: '', description: '' }
   ) => {
@@ -17,6 +17,14 @@ export const suite = staticSuite<FieldName>(
 
     test('description', 'Description is required', () => {
       enforce(data.description).isNotBlank();
+    });
+  }
+);
+
+export const commentSuite = staticSuite<'message'>(
+  (data: Pick<Comment, 'message'> = { message: '' }) => {
+    test('message', 'Message is required', () => {
+      enforce(data.message).isNotBlank();
     });
   }
 );

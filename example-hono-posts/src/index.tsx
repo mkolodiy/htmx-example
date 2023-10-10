@@ -1,34 +1,9 @@
 import { serve } from '@hono/node-server';
-import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
+import { Hono } from 'hono';
 import { Base } from './components/base';
-import {
-  EmptySidebarEntries,
-  Sidebar,
-  SidebarEntries,
-} from './components/sidebar';
-import {
-  Comment as CommentComp,
-  Comments,
-  CreatePost,
-  EmptyPost,
-  Post as PostComp,
-} from './components/post';
-import {
-  type Post,
-  getComments,
-  getPost,
-  getPosts,
-  searchPosts,
-  createPost,
-  deletePost,
-  type Comment,
-  createComment,
-  updatePost,
-} from './api/posts';
-import { suite } from './suite';
-import { pages } from './pages';
 import { controllers } from './controllers';
+import { pages } from './pages';
 
 const app = new Hono();
 

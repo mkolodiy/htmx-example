@@ -41,20 +41,17 @@ export function Post(props: { post: Post; children: Children }) {
           Leave a comment
         </h2>
         <form
+          class="flex flex-col gap-2"
           hx-post={`/posts/${props.post.id}/comments`}
           hx-target="#comments"
           hx-swap="beforeend"
           hx-disabled-elt="#comment-form-submit-btn"
         >
-          <textarea
-            name="message"
-            class="textarea textarea-bordered w-full"
-            placeholder="Comment here..."
-          ></textarea>
+          <CommentMessageTextarea />
           <button
             id="comment-form-submit-btn"
             type="submit"
-            class="btn normal-case"
+            class="btn normal-case w-max"
           >
             <span class="loading loading-spinner htmx-indicator"></span>
             Submit
@@ -62,6 +59,31 @@ export function Post(props: { post: Post; children: Children }) {
         </form>
         {props.children}
       </div>
+    </div>
+  );
+}
+
+export function CommentMessageTextarea(props: {
+  message?: string;
+  errors?: Children;
+}) {
+  return (
+    <div
+      id="comment-message-form-control"
+      class="form-control w-full"
+      hx-trigger="refresh-comment-message-textarea from:body"
+      hx-get="/fragment/comment-message-textarea"
+      hx-target="this"
+      hx-swap="outerHTML"
+    >
+      <textarea
+        name="message"
+        class="textarea textarea-bordered"
+        placeholder="Comment here..."
+      >
+        {props.message || ''}
+      </textarea>
+      {props.errors || null}
     </div>
   );
 }

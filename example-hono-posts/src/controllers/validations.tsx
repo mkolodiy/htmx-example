@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { Post } from '../api/posts';
-import { suite } from '../suite';
+import { postSuite } from '../suite';
 import {
   FormErrors,
   PostDescriptionInput,
@@ -11,7 +11,7 @@ export const validations = new Hono()
   .post('/posts/validate/title', async (c) => {
     const body = await c.req.parseBody<Pick<Post, 'title'>>();
 
-    const validationResult = suite(body);
+    const validationResult = postSuite(body);
 
     if (validationResult.isValid('title')) {
       return c.html(<PostTitleInput title={body.title} />);
@@ -28,7 +28,7 @@ export const validations = new Hono()
   .post('/posts/validate/description', async (c) => {
     const body = await c.req.parseBody<Pick<Post, 'description'>>();
 
-    const validationResult = suite(body);
+    const validationResult = postSuite(body);
 
     if (validationResult.isValid('description')) {
       return c.html(<PostDescriptionInput description={body.description} />);

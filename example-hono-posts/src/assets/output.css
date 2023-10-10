@@ -1062,13 +1062,6 @@ html {
   color: hsl(var(--bc) / var(--tw-text-opacity));
 }
 
-.label-text-alt {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  --tw-text-opacity: 1;
-  color: hsl(var(--bc) / var(--tw-text-opacity));
-}
-
 .input[list]::-webkit-calendar-picker-indicator {
   line-height: 1em;
 }
@@ -1082,15 +1075,6 @@ html {
   outline-width: 2px;
   outline-offset: 2px;
   outline-color: hsl(var(--bc) / 0.2);
-}
-
-.input-error {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--er) / var(--tw-border-opacity));
-}
-
-.input-error:focus {
-  outline-color: hsl(var(--er) / 1);
 }
 
 .input-disabled,
@@ -1450,6 +1434,11 @@ html {
   width: 100%;
 }
 
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1566,19 +1555,9 @@ html {
   text-transform: none;
 }
 
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
-}
-
 .text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
-}
-
-.text-red-800 {
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity));
 }
 
 .shadow {

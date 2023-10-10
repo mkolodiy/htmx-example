@@ -7,9 +7,10 @@ import {
   deletePost,
   updatePost,
 } from '../api/posts';
-import { suite } from '../suite';
+import { commentSuite, postSuite } from '../suite';
 import {
   Comment as CommentComp,
+  CommentMessageTextarea,
   CreatePost,
   FormErrors,
   PostDescriptionInput,
@@ -20,7 +21,7 @@ export const posts = new Hono()
   .post('/posts/add', async (c) => {
     const body = await c.req.parseBody<Omit<Post, 'id'>>();
 
-    const validationResult = suite(body);
+    const validationResult = postSuite(body);
     if (validationResult.isValid()) {
       const id = await createPost(body);
       c.header('HX-Location', `/posts/${id}`);
@@ -54,7 +55,7 @@ export const posts = new Hono()
     const id = c.req.param('id');
     const body = await c.req.parseBody<Omit<Post, 'id'>>();
 
-    const validationResult = suite(body);
+    const validationResult = postSuite(body);
     if (validationResult.isValid()) {
       await updatePost({ id, ...body });
       c.header('HX-Location', `/posts/${id}`);
@@ -93,6 +94,20 @@ export const posts = new Hono()
   .post('/posts/:id/comments', async (c) => {
     const id = c.req.param('id');
     const body = await c.req.parseBody<Pick<Comment, 'message'>>();
-    const comment = await createComment({ postId: id, ...body });
-    return c.html(<CommentComp comment={comment} />);
+    const validationResult = commentSuite(body);
+    if (validationResult.isValid()) {
+      const comment = await createComment({ postId: id, ...body });
+      c.header('HX-Trigger', 'refresh-comment-message-textarea');
+      return c.html(<CommentComp comment={comment} />);
+    } else {
+      const errors = validationResult.getErrors('message');
+      c.header('HX-Reswap', 'outerHTML');
+      c.header('HX-Retarget', '#comment-message-form-control');
+      return c.html(
+        <CommentMessageTextarea
+          message={body.message}
+          errors={<FormErrors errors={errors} />}
+        />
+      );
+    }
   });

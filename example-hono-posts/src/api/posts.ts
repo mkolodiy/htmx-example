@@ -13,7 +13,13 @@ export type Comment = {
   createdAt: Date;
 };
 
-let posts: Array<Post> = [];
+let posts: Array<Post> = [
+  {
+    id: 'c5edb978-14d3-458e-880b-28518f74a148',
+    title: 'Test title 123',
+    description: 'Long description',
+  },
+];
 
 const comments: Array<Comment> = [];
 
